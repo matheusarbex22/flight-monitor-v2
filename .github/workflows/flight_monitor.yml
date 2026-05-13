@@ -1,1 +1,31 @@
+name: Flight Price Monitor
 
+on:
+  schedule:
+    - cron: '0 0,8,16 * * *'   # Runs at 00:00, 08:00, 16:00 UTC every day
+  workflow_dispatch:             # Also allows manual trigger from GitHub UI
+
+jobs:
+  check-flights:
+    runs-on: ubuntu-latest
+
+    env:
+      SERPAPI_KEY:       ${{ secrets.SERPAPI_KEY }}
+      SENDGRID_API_KEY:  ${{ secrets.SENDGRID_API_KEY }}
+      SENDGRID_FROM:     ${{ secrets.SENDGRID_FROM }}
+      ALERT_EMAIL:       ${{ secrets.ALERT_EMAIL }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run flight monitor
+        run: python flight_monitor.py
