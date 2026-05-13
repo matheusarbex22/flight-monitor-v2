@@ -2,8 +2,8 @@ name: Flight Price Monitor
 
 on:
   schedule:
-    - cron: '0 0,8,16 * * *'   # Runs at 00:00, 08:00, 16:00 UTC every day
-  workflow_dispatch:             # Also allows manual trigger from GitHub UI
+    - cron: '0 0,8,16 * * *'
+  workflow_dispatch:
 
 jobs:
   check-flights:
